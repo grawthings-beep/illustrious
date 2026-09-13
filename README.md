@@ -12,6 +12,14 @@
 
 ## RunPodで起動する
 
+**ビルド済みのコンテナイメージ：`ghcr.io/grawthings-beep/illustrious:latest`**
+
+RunPodのContainer Imageに指定し、下のSecret・HTTPポート・保存領域を設定すれば、自動でStudioが起動します。2026-09-13に[DockerビルドとCPUでの実ComfyUI読み込み](https://github.com/grawthings-beep/illustrious/actions/runs/34756764943)、レジストリからの認証なし取得を確認しました。コンテナ取得用のGitHubトークンは不要です。イメージを固定したい場合は次のdigestを指定できます。
+
+```text
+ghcr.io/grawthings-beep/illustrious@sha256:39c5d3e192023db72492b9b6e2f3c2ade5ccfed238978b1a72b3bca531032826
+```
+
 **このrepoのDockerfileからビルドしたPodを起動する場合、ターミナルで`git clone`や`bash`を実行する必要はありません。** DockerfileのENTRYPOINTがモデルの準備からStudioの起動まで自動実行します。
 
 Animaと同様にrepoからビルドして使う場合は、リポジトリ`grawthings-beep/illustrious`、ブランチ`main`、Dockerfileのパス`Dockerfile`を使用します。起動コマンドの上書きは空欄（Dockerfileの既定値を使用）にしてください。このアプリは**GPU Podで操作するWeb画面**です。ServerlessのQueue用handlerではありません。
@@ -26,6 +34,8 @@ GPU付きPodを使用し、HTTPポートに **8188** を追加してください
 | --- | --- |
 | `CIVITAI_TOKEN` | `{{ RUNPOD_SECRET_CIVITAI_TOKEN }}` |
 | `HF_TOKEN` | `{{ RUNPOD_SECRET_HF_TOKEN }}` |
+| `ILLUSTRIOUS_WORKSPACE` | `/workspace` |
+| `ILLUSTRIOUS_PORT` | `8188` |
 
 この記法は**RunPodの設定画面**で展開されます。ターミナルにこの文字列をexportする必要はありません。`.env.example`は説明用で、自動読み込みはしません。トークンの値をGitHubに登録・コミットする必要もありません。[RunPod公式のSecret設定](https://docs.runpod.io/pods/templates/secrets)
 
@@ -35,7 +45,7 @@ LoRA学習に使ったPodをそのまま使用できます。起動済みの別�
 
 Secretとポートを設定してPodを起動すると、自動で環境検証・モデルの準備・Studio起動が始まります。起動ログを確認してから、次の手順で画面を開いてください。モデルは初回のみダウンロードし、同じ保存領域に残っていれば再利用します。
 
-Dockerfileには自動起動設定がありますが、実際のRunPod上でのDockerビルド・GPU生成成功はまだ未確認です。
+Dockerビルド・CPUでの実ComfyUI読み込みはGitHub Actionsで確認済みです。実際のRunPod上でのGPU生成成功・生成品質はまだ未確認です。
 
 <details>
 <summary>既存Podへの手動追加（repoからビルドして起動する場合は不要）</summary>
@@ -150,6 +160,6 @@ PCのPowerShellで保存先フォルダに移動し、表示された受信用�
 
 [`Dockerfile`](Dockerfile)はPyTorch 2.11.0 / CUDA 13.0の公式イメージをdigestで固定しています。重みと秘密トークンはビルドせず、Pod起動時に読み込みます。
 
-RunPod側でこのrepoのDockerfileをビルドする場合、GHCRのイメージ作成は不要です。あらかじめコンテナレジストリに置いて使いたい場合のみ、GitHubのActions → **Build RunPod image** → **Run workflow** で`ghcr.io/grawthings-beep/illustrious:latest`を作成できます。**ビルド完了前はこのGHCRイメージは使用できません。** GHCRから起動する場合のRunPod用設定例は[`deploy/runpod-template.json`](deploy/runpod-template.json)。GHCRのパッケージがprivateの場合は、RunPodのレジストリ認証設定かパッケージの公開設定が必要です。
+公開済みのGHCRイメージを使う場合は再ビルド不要です。更新版を作るときは、GitHubのActions → **Build RunPod image** → **Run workflow** を実行します。ビルド済みイメージには、PCと同じ`runpodctl 2.3.0`もSHA-256検証付きで同梱しています。Pod用設定例は[`deploy/runpod-template.json`](deploy/runpod-template.json)。RunPod側でrepoのDockerfileを直接ビルドする使い方も可能です。
 
 追加キャラの登録、Hugging Face上のLoRA取得、構成の詳細、検証内容は[`docs/WORKFLOWS.md`](docs/WORKFLOWS.md)を参照してください。
