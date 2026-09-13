@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Illustrious Studio</title>
+  <link rel="stylesheet" href="/illustrious/assets/studio.css">
+</head>
+<body>
+  <header><div><span class="eyebrow">NOVA ANIME XL · IL V19.0</span><h1>Illustrious Studio<span class="dot">.</span></h1></div><a class="quiet" href="/" target="_blank" rel="noopener">ComfyUIを開く ↗</a></header>
+  <main>
+    <section class="editor">
+      <div class="section-title"><h2>同じ一枚に、好きなキャラを。</h2><span id="connection" class="badge">接続中</span></div>
+      <p class="intro">キャラごとにLoRAとプロンプトを分けて生成。枠を動かして、それぞれの位置と大きさを指定できます。</p>
+      <div class="toolbar"><div class="segmented" id="count-options" aria-label="キャラ数"><button data-count="1">1人</button><button class="selected" data-count="2">2人</button><button data-count="3">3人</button><button data-count="4">4人</button></div><button id="reset-layout" class="quiet">横並びに戻す</button></div>
+      <div id="layout" aria-label="キャラ配置プレビュー"><div class="layout-label">CHARACTER LAYOUT</div><div id="regions"></div></div>
+      <div class="hint">枠をドラッグして移動。右下の丸でサイズ変更。これは配置の目安です。</div>
+      <div id="characters"></div>
+      <section class="panel scene-settings"><h3>シーンと画風</h3><label for="scene-prompt">全員に共通する背景・光・構図</label><textarea id="scene-prompt" rows="3">beach, ocean, blue sky, daylight, standing, looking at viewer</textarea><p class="hint">髪色・目色・衣装は上の各キャラ欄に。全体欄には背景や光を書きます。</p><details><summary>ネガティブプロンプト</summary><textarea id="negative" rows="3"></textarea></details></section>
+      <section class="panel"><h3>生成設定</h3><div class="settings-grid"><label>幅<input id="width" type="number" min="512" max="2048" step="8" value="1344"></label><label>高さ<input id="height" type="number" min="512" max="2048" step="8" value="896"></label><label>ステップ<input id="steps" type="number" min="1" max="80" value="28"></label><label>CFG<input id="cfg" type="number" min="1" max="15" step="0.5" value="5.5"></label><label>Seed<input id="seed" type="number" min="0" max="9007199254740991" value="42"></label><label>境界ぼかし(px)<input id="feather" type="number" min="0" max="128" value="24"></label></div><label class="check"><input id="random-seed" type="checkbox" checked>毎回Seedを変える</label></section>
+    </section>
+    <aside class="results"><div class="result-top"><div><span class="eyebrow">OUTPUT</span><h2>生成結果</h2></div><button id="export" class="quiet">ワークフロー保存 ↓</button></div><div id="availability" role="status"></div><button id="generate" class="primary" disabled>この配置で生成する <span>↗</span></button><div class="progress"><div id="progress-bar"></div></div><p id="status" role="status" aria-live="polite">モデルの配置を確認しています…</p><div id="gallery"><div class="empty"><div class="empty-symbol">✧</div><h3>ここから一枚が始まる。</h3><p>キャラと配置を決めて、生成ボタンを押してください。</p><span>画像はPNGで保存されます</span></div></div><p class="hint">人数や重なる位置によって特徴が混ざることがあります。まず2人・重なりの少ない配置で調整してください。人数を増やすと生成時間も長くなります。</p></aside>
+  </main>
+  <footer>Illustrious Studio <span>Nova Anime XL IL v19.0 · Native ComfyUI LoRA Hooks</span></footer>
+  <script type="module" src="/illustrious/assets/studio.js"></script>
+</body>
+</html>

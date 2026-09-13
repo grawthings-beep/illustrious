@@ -1,0 +1,36 @@
+{
+  "width": 1344,
+  "height": 896,
+  "seed": 42,
+  "steps": 28,
+  "cfg": 5.5,
+  "feather": 24,
+  "prompt": "beach, ocean, blue sky, daylight, standing, looking at viewer",
+  "characters": [
+    {
+      "id": "swimsuit_elegg",
+      "prompt": "blonde hair, short hair, hair over eyes, yellow bikini, heart cutout, standing, smile",
+      "strength": 0.8,
+      "region": [
+        0.02,
+        0.02,
+        0.46,
+        0.96
+      ],
+      "negative": ""
+    },
+    {
+      "id": "swimsuit_rapi",
+      "prompt": "red hair, red eyes, long hair, ponytail, white shirt, green sleeves, red bikini bottom, standing, smile",
+      "strength": 0.8,
+      "region": [
+        0.52,
+        0.02,
+        0.46,
+        0.96
+      ],
+      "negative": ""
+    }
+  ],
+  "negative": "worst quality, low quality, lowres, bad anatomy, bad hands, extra fingers, missing fingers, extra limbs, text, watermark, signature"
+}

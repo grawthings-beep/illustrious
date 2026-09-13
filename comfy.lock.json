@@ -1,0 +1,6 @@
+{
+  "repository": "https://github.com/Comfy-Org/ComfyUI.git",
+  "commit": "02d39c8cd7828566f48ccf783c1c75b8336044f5",
+  "checked_at": "2026-09-13",
+  "regional_nodes": ["CreateHookLora", "PairConditioningSetProperties", "PairConditioningCombine", "PairConditioningSetDefaultCombine"]
+}

@@ -1,0 +1,15 @@
+{
+  "checkpoint": {
+    "name": "Nova Anime XL IL v19.0",
+    "filename": "novaAnimeXL_ilV190.safetensors",
+    "url": "https://civitai.com/api/download/models/2940478?fileId=2819621",
+    "sha256": "fa486caafc330f133605d3c18b418d183812f14946631c6544bfb28730db6d6f",
+    "size_bytes": 6939105596
+  },
+  "characters": [
+    {"id":"swimsuit_elegg","label":"水着エレグ","trigger":"sw1melegg","filename":"illustrious_swimsuit_elegg.safetensors","sha256":"66799b7e1c816ed365a2f9d071d52f3924f7ddcf966b0611e0684b8c599eeb02","prompt":"blonde hair, short hair, hair over eyes, yellow bikini, heart cutout, standing, smile"},
+    {"id":"swimsuit_rapi","label":"水着ラピ","trigger":"sw1mrapi","filename":"illustrious_swimsuit_rapi.safetensors","sha256":"83aacc8f6cf4c2281e90e50ce1a4075625df47b04dcd2c7dd8477fc8df9c8044","prompt":"red hair, red eyes, long hair, ponytail, white shirt, green sleeves, red bikini bottom, standing, smile"},
+    {"id":"cinderella_white","label":"白シンデレラ","trigger":"wh1tec1nde","filename":"illustrious_cinderella_white.safetensors","sha256":"112724bc27b2a5af1af4b81a8913d8c722929e9b73bab045c450bee1bf0e9f92","prompt":"grey hair, red eyes, very long hair, twintails, white bikini, white sarong, standing, smile"},
+    {"id":"cinderella_black_bikini","label":"シンデレラ黒ビキニ","trigger":"b1k1c1nde","filename":"illustrious_cinderella_black_bikini.safetensors","sha256":"faea5b888c595db65392cf3cdf4276873f8a8172398b0bf40651ac753899e063","prompt":"grey hair, red eyes, very long hair, twintails, black bikini, standing, smile"}
+  ]
+}

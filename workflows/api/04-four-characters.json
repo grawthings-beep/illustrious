@@ -1,0 +1,650 @@
+{
+  "1": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "novaAnimeXL_ilV190.safetensors"
+    },
+    "_meta": {
+      "title": "学習と同じ Nova Anime XL IL v19.0"
+    }
+  },
+  "2": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "1",
+        1
+      ],
+      "text": "masterpiece, best quality, very aesthetic, beach, ocean, blue sky, daylight, standing, looking at viewer"
+    },
+    "_meta": {
+      "title": "共通の背景・画風（空いた領域）"
+    }
+  },
+  "3": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "1",
+        1
+      ],
+      "text": "worst quality, low quality, lowres, bad anatomy, bad hands, extra fingers, missing fingers, extra limbs, text, watermark, signature"
+    },
+    "_meta": {
+      "title": "共通ネガティブ"
+    }
+  },
+  "4": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 0.0,
+      "width": 1536,
+      "height": 1024
+    },
+    "_meta": {
+      "title": "領域の土台"
+    }
+  },
+  "5": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "1",
+        1
+      ],
+      "text": "masterpiece, best quality, very aesthetic, beach, ocean, blue sky, daylight, standing, looking at viewer, 1girl, sw1melegg, blonde hair, short hair, hair over eyes, yellow bikini, heart cutout, standing, smile"
+    },
+    "_meta": {
+      "title": "1: 水着エレグ / 髪・目・衣装・ポーズ"
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "1",
+        1
+      ],
+      "text": "worst quality, low quality, lowres, bad anatomy, bad hands, extra fingers, missing fingers, extra limbs, text, watermark, signature"
+    },
+    "_meta": {
+      "title": "1: 水着エレグ / ネガティブ"
+    }
+  },
+  "7": {
+    "class_type": "CreateHookLora",
+    "inputs": {
+      "lora_name": "illustrious_swimsuit_elegg.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.0
+    },
+    "_meta": {
+      "title": "1: 水着エレグ / 専用LoRA"
+    }
+  },
+  "8": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 323,
+      "height": 983
+    },
+    "_meta": {
+      "title": "1: 水着エレグ / 領域サイズ"
+    }
+  },
+  "9": {
+    "class_type": "FeatherMask",
+    "inputs": {
+      "mask": [
+        "8",
+        0
+      ],
+      "left": 24,
+      "top": 24,
+      "right": 24,
+      "bottom": 24
+    },
+    "_meta": {
+      "title": "1: 水着エレグ / 境界"
+    }
+  },
+  "10": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "4",
+        0
+      ],
+      "source": [
+        "9",
+        0
+      ],
+      "x": 31,
+      "y": 20,
+      "operation": "add"
+    },
+    "_meta": {
+      "title": "1: 水着エレグ / 位置"
+    }
+  },
+  "11": {
+    "class_type": "PairConditioningSetProperties",
+    "inputs": {
+      "positive_NEW": [
+        "5",
+        0
+      ],
+      "negative_NEW": [
+        "6",
+        0
+      ],
+      "strength": 1.0,
+      "set_cond_area": "default",
+      "mask": [
+        "10",
+        0
+      ],
+      "hooks": [
+        "7",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "1: 水着エレグ / この領域だけに適用"
+    }
+  },
+  "12": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "1",
+        1
+      ],
+      "text": "masterpiece, best quality, very aesthetic, beach, ocean, blue sky, daylight, standing, looking at viewer, 1girl, sw1mrapi, red hair, red eyes, long hair, ponytail, white shirt, green sleeves, red bikini bottom, standing, smile"
+    },
+    "_meta": {
+      "title": "2: 水着ラピ / 髪・目・衣装・ポーズ"
+    }
+  },
+  "13": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "1",
+        1
+      ],
+      "text": "worst quality, low quality, lowres, bad anatomy, bad hands, extra fingers, missing fingers, extra limbs, text, watermark, signature"
+    },
+    "_meta": {
+      "title": "2: 水着ラピ / ネガティブ"
+    }
+  },
+  "14": {
+    "class_type": "CreateHookLora",
+    "inputs": {
+      "lora_name": "illustrious_swimsuit_rapi.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.0
+    },
+    "_meta": {
+      "title": "2: 水着ラピ / 専用LoRA"
+    }
+  },
+  "15": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 323,
+      "height": 983
+    },
+    "_meta": {
+      "title": "2: 水着ラピ / 領域サイズ"
+    }
+  },
+  "16": {
+    "class_type": "FeatherMask",
+    "inputs": {
+      "mask": [
+        "15",
+        0
+      ],
+      "left": 24,
+      "top": 24,
+      "right": 24,
+      "bottom": 24
+    },
+    "_meta": {
+      "title": "2: 水着ラピ / 境界"
+    }
+  },
+  "17": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "4",
+        0
+      ],
+      "source": [
+        "16",
+        0
+      ],
+      "x": 415,
+      "y": 20,
+      "operation": "add"
+    },
+    "_meta": {
+      "title": "2: 水着ラピ / 位置"
+    }
+  },
+  "18": {
+    "class_type": "PairConditioningSetProperties",
+    "inputs": {
+      "positive_NEW": [
+        "12",
+        0
+      ],
+      "negative_NEW": [
+        "13",
+        0
+      ],
+      "strength": 1.0,
+      "set_cond_area": "default",
+      "mask": [
+        "17",
+        0
+      ],
+      "hooks": [
+        "14",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "2: 水着ラピ / この領域だけに適用"
+    }
+  },
+  "19": {
+    "class_type": "PairConditioningCombine",
+    "inputs": {
+      "positive_A": [
+        "11",
+        0
+      ],
+      "negative_A": [
+        "11",
+        1
+      ],
+      "positive_B": [
+        "18",
+        0
+      ],
+      "negative_B": [
+        "18",
+        1
+      ]
+    },
+    "_meta": {
+      "title": "キャラの領域を統合"
+    }
+  },
+  "20": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "1",
+        1
+      ],
+      "text": "masterpiece, best quality, very aesthetic, beach, ocean, blue sky, daylight, standing, looking at viewer, 1girl, wh1tec1nde, grey hair, red eyes, very long hair, twintails, white bikini, white sarong, standing, smile"
+    },
+    "_meta": {
+      "title": "3: 白シンデレラ / 髪・目・衣装・ポーズ"
+    }
+  },
+  "21": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "1",
+        1
+      ],
+      "text": "worst quality, low quality, lowres, bad anatomy, bad hands, extra fingers, missing fingers, extra limbs, text, watermark, signature"
+    },
+    "_meta": {
+      "title": "3: 白シンデレラ / ネガティブ"
+    }
+  },
+  "22": {
+    "class_type": "CreateHookLora",
+    "inputs": {
+      "lora_name": "illustrious_cinderella_white.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.0
+    },
+    "_meta": {
+      "title": "3: 白シンデレラ / 専用LoRA"
+    }
+  },
+  "23": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 323,
+      "height": 983
+    },
+    "_meta": {
+      "title": "3: 白シンデレラ / 領域サイズ"
+    }
+  },
+  "24": {
+    "class_type": "FeatherMask",
+    "inputs": {
+      "mask": [
+        "23",
+        0
+      ],
+      "left": 24,
+      "top": 24,
+      "right": 24,
+      "bottom": 24
+    },
+    "_meta": {
+      "title": "3: 白シンデレラ / 境界"
+    }
+  },
+  "25": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "4",
+        0
+      ],
+      "source": [
+        "24",
+        0
+      ],
+      "x": 799,
+      "y": 20,
+      "operation": "add"
+    },
+    "_meta": {
+      "title": "3: 白シンデレラ / 位置"
+    }
+  },
+  "26": {
+    "class_type": "PairConditioningSetProperties",
+    "inputs": {
+      "positive_NEW": [
+        "20",
+        0
+      ],
+      "negative_NEW": [
+        "21",
+        0
+      ],
+      "strength": 1.0,
+      "set_cond_area": "default",
+      "mask": [
+        "25",
+        0
+      ],
+      "hooks": [
+        "22",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "3: 白シンデレラ / この領域だけに適用"
+    }
+  },
+  "27": {
+    "class_type": "PairConditioningCombine",
+    "inputs": {
+      "positive_A": [
+        "19",
+        0
+      ],
+      "negative_A": [
+        "19",
+        1
+      ],
+      "positive_B": [
+        "26",
+        0
+      ],
+      "negative_B": [
+        "26",
+        1
+      ]
+    },
+    "_meta": {
+      "title": "キャラの領域を統合"
+    }
+  },
+  "28": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "1",
+        1
+      ],
+      "text": "masterpiece, best quality, very aesthetic, beach, ocean, blue sky, daylight, standing, looking at viewer, 1girl, b1k1c1nde, grey hair, red eyes, very long hair, twintails, black bikini, standing, smile"
+    },
+    "_meta": {
+      "title": "4: シンデレラ黒ビキニ / 髪・目・衣装・ポーズ"
+    }
+  },
+  "29": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "1",
+        1
+      ],
+      "text": "worst quality, low quality, lowres, bad anatomy, bad hands, extra fingers, missing fingers, extra limbs, text, watermark, signature"
+    },
+    "_meta": {
+      "title": "4: シンデレラ黒ビキニ / ネガティブ"
+    }
+  },
+  "30": {
+    "class_type": "CreateHookLora",
+    "inputs": {
+      "lora_name": "illustrious_cinderella_black_bikini.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.0
+    },
+    "_meta": {
+      "title": "4: シンデレラ黒ビキニ / 専用LoRA"
+    }
+  },
+  "31": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 323,
+      "height": 983
+    },
+    "_meta": {
+      "title": "4: シンデレラ黒ビキニ / 領域サイズ"
+    }
+  },
+  "32": {
+    "class_type": "FeatherMask",
+    "inputs": {
+      "mask": [
+        "31",
+        0
+      ],
+      "left": 24,
+      "top": 24,
+      "right": 24,
+      "bottom": 24
+    },
+    "_meta": {
+      "title": "4: シンデレラ黒ビキニ / 境界"
+    }
+  },
+  "33": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "4",
+        0
+      ],
+      "source": [
+        "32",
+        0
+      ],
+      "x": 1183,
+      "y": 20,
+      "operation": "add"
+    },
+    "_meta": {
+      "title": "4: シンデレラ黒ビキニ / 位置"
+    }
+  },
+  "34": {
+    "class_type": "PairConditioningSetProperties",
+    "inputs": {
+      "positive_NEW": [
+        "28",
+        0
+      ],
+      "negative_NEW": [
+        "29",
+        0
+      ],
+      "strength": 1.0,
+      "set_cond_area": "default",
+      "mask": [
+        "33",
+        0
+      ],
+      "hooks": [
+        "30",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "4: シンデレラ黒ビキニ / この領域だけに適用"
+    }
+  },
+  "35": {
+    "class_type": "PairConditioningCombine",
+    "inputs": {
+      "positive_A": [
+        "27",
+        0
+      ],
+      "negative_A": [
+        "27",
+        1
+      ],
+      "positive_B": [
+        "34",
+        0
+      ],
+      "negative_B": [
+        "34",
+        1
+      ]
+    },
+    "_meta": {
+      "title": "キャラの領域を統合"
+    }
+  },
+  "36": {
+    "class_type": "PairConditioningSetDefaultCombine",
+    "inputs": {
+      "positive": [
+        "35",
+        0
+      ],
+      "negative": [
+        "35",
+        1
+      ],
+      "positive_DEFAULT": [
+        "2",
+        0
+      ],
+      "negative_DEFAULT": [
+        "3",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "キャラ以外の領域を共通背景で補完"
+    }
+  },
+  "37": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1536,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "1枚の画像を同時生成"
+    }
+  },
+  "38": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "36",
+        0
+      ],
+      "negative": [
+        "36",
+        1
+      ],
+      "latent_image": [
+        "37",
+        0
+      ],
+      "seed": 42,
+      "steps": 28,
+      "cfg": 5.5,
+      "sampler_name": "dpmpp_2m_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "複数キャラを同じ画像で生成"
+    }
+  },
+  "39": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "38",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "画像に変換"
+    }
+  },
+  "40": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "39",
+        0
+      ],
+      "filename_prefix": "illustrious/4characters"
+    },
+    "_meta": {
+      "title": "保存（PNGにワークフローも記録）"
+    }
+  }
+}

@@ -1,0 +1,905 @@
+{
+  "last_node_id": 16,
+  "last_link_id": 22,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        300,
+        160
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "title": "学習と同じ Nova Anime XL IL v19.0",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            16
+          ]
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            21
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "novaAnimeXL_ilV190.safetensors"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "CLIPTextEncode",
+      "pos": [
+        0,
+        230
+      ],
+      "size": [
+        330,
+        190
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "title": "共通の背景・画風（空いた領域）",
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "masterpiece, best quality, very aesthetic, beach, ocean, blue sky, daylight, standing, looking at viewer"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "CLIPTextEncode",
+      "pos": [
+        0,
+        470
+      ],
+      "size": [
+        330,
+        190
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "title": "共通ネガティブ",
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            15
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "worst quality, low quality, lowres, bad anatomy, bad hands, extra fingers, missing fingers, extra limbs, text, watermark, signature"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "SolidMask",
+      "pos": [
+        0,
+        720
+      ],
+      "size": [
+        300,
+        160
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "title": "領域の土台",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SolidMask"
+      },
+      "widgets_values": [
+        0,
+        1024,
+        1024
+      ]
+    },
+    {
+      "id": 5,
+      "type": "CLIPTextEncode",
+      "pos": [
+        400,
+        0
+      ],
+      "size": [
+        350,
+        240
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "title": "1: 水着エレグ / 髪・目・衣装・ポーズ",
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "masterpiece, best quality, very aesthetic, beach, ocean, blue sky, daylight, standing, looking at viewer, 1girl, sw1melegg, blonde hair, short hair, hair over eyes, yellow bikini, heart cutout, standing, smile"
+      ]
+    },
+    {
+      "id": 6,
+      "type": "CLIPTextEncode",
+      "pos": [
+        400,
+        290
+      ],
+      "size": [
+        350,
+        190
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "title": "1: 水着エレグ / ネガティブ",
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "worst quality, low quality, lowres, bad anatomy, bad hands, extra fingers, missing fingers, extra limbs, text, watermark, signature"
+      ]
+    },
+    {
+      "id": 7,
+      "type": "CreateHookLora",
+      "pos": [
+        800,
+        0
+      ],
+      "size": [
+        300,
+        160
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "title": "1: 水着エレグ / 専用LoRA",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "HOOKS",
+          "type": "HOOKS",
+          "links": [
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CreateHookLora"
+      },
+      "widgets_values": [
+        "illustrious_swimsuit_elegg.safetensors",
+        0.8,
+        0.0
+      ]
+    },
+    {
+      "id": 8,
+      "type": "SolidMask",
+      "pos": [
+        400,
+        540
+      ],
+      "size": [
+        300,
+        160
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "title": "1: 水着エレグ / 領域サイズ",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SolidMask"
+      },
+      "widgets_values": [
+        1,
+        983,
+        983
+      ]
+    },
+    {
+      "id": 9,
+      "type": "FeatherMask",
+      "pos": [
+        800,
+        250
+      ],
+      "size": [
+        300,
+        160
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "title": "1: 水着エレグ / 境界",
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "FeatherMask"
+      },
+      "widgets_values": [
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "id": 10,
+      "type": "MaskComposite",
+      "pos": [
+        800,
+        510
+      ],
+      "size": [
+        300,
+        160
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "title": "1: 水着エレグ / 位置",
+      "inputs": [
+        {
+          "name": "destination",
+          "type": "MASK",
+          "link": 6
+        },
+        {
+          "name": "source",
+          "type": "MASK",
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            10
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskComposite"
+      },
+      "widgets_values": [
+        20,
+        20,
+        "add"
+      ]
+    },
+    {
+      "id": 11,
+      "type": "PairConditioningSetProperties",
+      "pos": [
+        1190,
+        0
+      ],
+      "size": [
+        300,
+        160
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "title": "1: 水着エレグ / この領域だけに適用",
+      "inputs": [
+        {
+          "name": "positive_NEW",
+          "type": "CONDITIONING",
+          "link": 8
+        },
+        {
+          "name": "negative_NEW",
+          "type": "CONDITIONING",
+          "link": 9
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 10
+        },
+        {
+          "name": "hooks",
+          "type": "HOOKS",
+          "link": 11
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            12
+          ]
+        },
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            13
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PairConditioningSetProperties"
+      },
+      "widgets_values": [
+        1.0,
+        "default"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "PairConditioningSetDefaultCombine",
+      "pos": [
+        1940,
+        0
+      ],
+      "size": [
+        300,
+        160
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "title": "キャラ以外の領域を共通背景で補完",
+      "inputs": [
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 12
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 13
+        },
+        {
+          "name": "positive_DEFAULT",
+          "type": "CONDITIONING",
+          "link": 14
+        },
+        {
+          "name": "negative_DEFAULT",
+          "type": "CONDITIONING",
+          "link": 15
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            17
+          ]
+        },
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            18
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PairConditioningSetDefaultCombine"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 13,
+      "type": "EmptyLatentImage",
+      "pos": [
+        1940,
+        240
+      ],
+      "size": [
+        300,
+        160
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "title": "1枚の画像を同時生成",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            19
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ]
+    },
+    {
+      "id": 14,
+      "type": "KSampler",
+      "pos": [
+        2320,
+        0
+      ],
+      "size": [
+        330,
+        320
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "title": "複数キャラを同じ画像で生成",
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 16
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 17
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 18
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 19
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            20
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        42,
+        "fixed",
+        28,
+        5.5,
+        "dpmpp_2m_sde",
+        "karras",
+        1.0
+      ]
+    },
+    {
+      "id": 15,
+      "type": "VAEDecode",
+      "pos": [
+        2700,
+        0
+      ],
+      "size": [
+        300,
+        160
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "title": "画像に変換",
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 20
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 21
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            22
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 16,
+      "type": "SaveImage",
+      "pos": [
+        3050,
+        0
+      ],
+      "size": [
+        390,
+        450
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "title": "保存（PNGにワークフローも記録）",
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 22
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "illustrious/1characters"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      1,
+      2,
+      0,
+      "CLIP"
+    ],
+    [
+      2,
+      1,
+      1,
+      3,
+      0,
+      "CLIP"
+    ],
+    [
+      3,
+      1,
+      1,
+      5,
+      0,
+      "CLIP"
+    ],
+    [
+      4,
+      1,
+      1,
+      6,
+      0,
+      "CLIP"
+    ],
+    [
+      5,
+      8,
+      0,
+      9,
+      0,
+      "MASK"
+    ],
+    [
+      6,
+      4,
+      0,
+      10,
+      0,
+      "MASK"
+    ],
+    [
+      7,
+      9,
+      0,
+      10,
+      1,
+      "MASK"
+    ],
+    [
+      8,
+      5,
+      0,
+      11,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      9,
+      6,
+      0,
+      11,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      10,
+      10,
+      0,
+      11,
+      2,
+      "MASK"
+    ],
+    [
+      11,
+      7,
+      0,
+      11,
+      3,
+      "HOOKS"
+    ],
+    [
+      12,
+      11,
+      0,
+      12,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      13,
+      11,
+      1,
+      12,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      14,
+      2,
+      0,
+      12,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      15,
+      3,
+      0,
+      12,
+      3,
+      "CONDITIONING"
+    ],
+    [
+      16,
+      1,
+      0,
+      14,
+      0,
+      "MODEL"
+    ],
+    [
+      17,
+      12,
+      0,
+      14,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      18,
+      12,
+      1,
+      14,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      19,
+      13,
+      0,
+      14,
+      3,
+      "LATENT"
+    ],
+    [
+      20,
+      14,
+      0,
+      15,
+      0,
+      "LATENT"
+    ],
+    [
+      21,
+      1,
+      2,
+      15,
+      1,
+      "VAE"
+    ],
+    [
+      22,
+      15,
+      0,
+      16,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "title": "1: 水着エレグ",
+      "bounding": [
+        370,
+        -40,
+        1160,
+        860
+      ],
+      "color": "#476c9b",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.5,
+      "offset": [
+        80,
+        80
+      ]
+    },
+    "illustrious_scene": {
+      "width": 1024,
+      "height": 1024,
+      "seed": 42,
+      "steps": 28,
+      "cfg": 5.5,
+      "feather": 24,
+      "prompt": "beach, ocean, blue sky, daylight, standing, looking at viewer",
+      "characters": [
+        {
+          "id": "swimsuit_elegg",
+          "prompt": "blonde hair, short hair, hair over eyes, yellow bikini, heart cutout, standing, smile",
+          "strength": 0.8,
+          "region": [
+            0.02,
+            0.02,
+            0.96,
+            0.96
+          ],
+          "negative": ""
+        }
+      ],
+      "negative": "worst quality, low quality, lowres, bad anatomy, bad hands, extra fingers, missing fingers, extra limbs, text, watermark, signature"
+    }
+  },
+  "version": 0.4
+}

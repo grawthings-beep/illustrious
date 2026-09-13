@@ -1,0 +1,384 @@
+{
+  "1": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "novaAnimeXL_ilV190.safetensors"
+    },
+    "_meta": {
+      "title": "学習と同じ Nova Anime XL IL v19.0"
+    }
+  },
+  "2": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "1",
+        1
+      ],
+      "text": "masterpiece, best quality, very aesthetic, beach, ocean, blue sky, daylight, standing, looking at viewer"
+    },
+    "_meta": {
+      "title": "共通の背景・画風（空いた領域）"
+    }
+  },
+  "3": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "1",
+        1
+      ],
+      "text": "worst quality, low quality, lowres, bad anatomy, bad hands, extra fingers, missing fingers, extra limbs, text, watermark, signature"
+    },
+    "_meta": {
+      "title": "共通ネガティブ"
+    }
+  },
+  "4": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 0.0,
+      "width": 1344,
+      "height": 896
+    },
+    "_meta": {
+      "title": "領域の土台"
+    }
+  },
+  "5": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "1",
+        1
+      ],
+      "text": "masterpiece, best quality, very aesthetic, beach, ocean, blue sky, daylight, standing, looking at viewer, 1girl, sw1melegg, blonde hair, short hair, hair over eyes, yellow bikini, heart cutout, standing, smile"
+    },
+    "_meta": {
+      "title": "1: 水着エレグ / 髪・目・衣装・ポーズ"
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "1",
+        1
+      ],
+      "text": "worst quality, low quality, lowres, bad anatomy, bad hands, extra fingers, missing fingers, extra limbs, text, watermark, signature"
+    },
+    "_meta": {
+      "title": "1: 水着エレグ / ネガティブ"
+    }
+  },
+  "7": {
+    "class_type": "CreateHookLora",
+    "inputs": {
+      "lora_name": "illustrious_swimsuit_elegg.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.0
+    },
+    "_meta": {
+      "title": "1: 水着エレグ / 専用LoRA"
+    }
+  },
+  "8": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 618,
+      "height": 860
+    },
+    "_meta": {
+      "title": "1: 水着エレグ / 領域サイズ"
+    }
+  },
+  "9": {
+    "class_type": "FeatherMask",
+    "inputs": {
+      "mask": [
+        "8",
+        0
+      ],
+      "left": 24,
+      "top": 24,
+      "right": 24,
+      "bottom": 24
+    },
+    "_meta": {
+      "title": "1: 水着エレグ / 境界"
+    }
+  },
+  "10": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "4",
+        0
+      ],
+      "source": [
+        "9",
+        0
+      ],
+      "x": 27,
+      "y": 18,
+      "operation": "add"
+    },
+    "_meta": {
+      "title": "1: 水着エレグ / 位置"
+    }
+  },
+  "11": {
+    "class_type": "PairConditioningSetProperties",
+    "inputs": {
+      "positive_NEW": [
+        "5",
+        0
+      ],
+      "negative_NEW": [
+        "6",
+        0
+      ],
+      "strength": 1.0,
+      "set_cond_area": "default",
+      "mask": [
+        "10",
+        0
+      ],
+      "hooks": [
+        "7",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "1: 水着エレグ / この領域だけに適用"
+    }
+  },
+  "12": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "1",
+        1
+      ],
+      "text": "masterpiece, best quality, very aesthetic, beach, ocean, blue sky, daylight, standing, looking at viewer, 1girl, sw1mrapi, red hair, red eyes, long hair, ponytail, white shirt, green sleeves, red bikini bottom, standing, smile"
+    },
+    "_meta": {
+      "title": "2: 水着ラピ / 髪・目・衣装・ポーズ"
+    }
+  },
+  "13": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "1",
+        1
+      ],
+      "text": "worst quality, low quality, lowres, bad anatomy, bad hands, extra fingers, missing fingers, extra limbs, text, watermark, signature"
+    },
+    "_meta": {
+      "title": "2: 水着ラピ / ネガティブ"
+    }
+  },
+  "14": {
+    "class_type": "CreateHookLora",
+    "inputs": {
+      "lora_name": "illustrious_swimsuit_rapi.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.0
+    },
+    "_meta": {
+      "title": "2: 水着ラピ / 専用LoRA"
+    }
+  },
+  "15": {
+    "class_type": "SolidMask",
+    "inputs": {
+      "value": 1.0,
+      "width": 618,
+      "height": 860
+    },
+    "_meta": {
+      "title": "2: 水着ラピ / 領域サイズ"
+    }
+  },
+  "16": {
+    "class_type": "FeatherMask",
+    "inputs": {
+      "mask": [
+        "15",
+        0
+      ],
+      "left": 24,
+      "top": 24,
+      "right": 24,
+      "bottom": 24
+    },
+    "_meta": {
+      "title": "2: 水着ラピ / 境界"
+    }
+  },
+  "17": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "4",
+        0
+      ],
+      "source": [
+        "16",
+        0
+      ],
+      "x": 699,
+      "y": 18,
+      "operation": "add"
+    },
+    "_meta": {
+      "title": "2: 水着ラピ / 位置"
+    }
+  },
+  "18": {
+    "class_type": "PairConditioningSetProperties",
+    "inputs": {
+      "positive_NEW": [
+        "12",
+        0
+      ],
+      "negative_NEW": [
+        "13",
+        0
+      ],
+      "strength": 1.0,
+      "set_cond_area": "default",
+      "mask": [
+        "17",
+        0
+      ],
+      "hooks": [
+        "14",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "2: 水着ラピ / この領域だけに適用"
+    }
+  },
+  "19": {
+    "class_type": "PairConditioningCombine",
+    "inputs": {
+      "positive_A": [
+        "11",
+        0
+      ],
+      "negative_A": [
+        "11",
+        1
+      ],
+      "positive_B": [
+        "18",
+        0
+      ],
+      "negative_B": [
+        "18",
+        1
+      ]
+    },
+    "_meta": {
+      "title": "キャラの領域を統合"
+    }
+  },
+  "20": {
+    "class_type": "PairConditioningSetDefaultCombine",
+    "inputs": {
+      "positive": [
+        "19",
+        0
+      ],
+      "negative": [
+        "19",
+        1
+      ],
+      "positive_DEFAULT": [
+        "2",
+        0
+      ],
+      "negative_DEFAULT": [
+        "3",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "キャラ以外の領域を共通背景で補完"
+    }
+  },
+  "21": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1344,
+      "height": 896,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "1枚の画像を同時生成"
+    }
+  },
+  "22": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "20",
+        0
+      ],
+      "negative": [
+        "20",
+        1
+      ],
+      "latent_image": [
+        "21",
+        0
+      ],
+      "seed": 42,
+      "steps": 28,
+      "cfg": 5.5,
+      "sampler_name": "dpmpp_2m_sde",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "複数キャラを同じ画像で生成"
+    }
+  },
+  "23": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "22",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "画像に変換"
+    }
+  },
+  "24": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "23",
+        0
+      ],
+      "filename_prefix": "illustrious/2characters"
+    },
+    "_meta": {
+      "title": "保存（PNGにワークフローも記録）"
+    }
+  }
+}

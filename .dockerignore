@@ -1,0 +1,13 @@
+.git
+.env*
+models
+output
+input
+user
+.runtime
+.venv
+**/__pycache__
+*.safetensors
+*.zip
+*.tar*
+test-results
