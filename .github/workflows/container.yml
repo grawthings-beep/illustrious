@@ -19,7 +19,9 @@ jobs:
       - uses: docker/build-push-action@v6
         with:
           context: .
+          platforms: linux/amd64
           push: true
+          labels: org.opencontainers.image.revision=${{ github.sha }}
           tags: ghcr.io/grawthings-beep/illustrious:latest,ghcr.io/grawthings-beep/illustrious:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
