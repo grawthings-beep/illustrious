@@ -1,6 +1,11 @@
 name: Build RunPod image
 on:
   workflow_dispatch:
+    inputs:
+      expected_revision:
+        description: 'Full commit SHA to build; abort if the branch resolves to another revision'
+        required: false
+        type: string
 permissions:
   contents: read
   packages: write
@@ -9,6 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
+      - name: Verify requested source revision
+        env:
+          EXPECTED_REVISION: ${{ inputs.expected_revision }}
+        run: |
+          if [[ -n "$EXPECTED_REVISION" && "$GITHUB_SHA" != "$EXPECTED_REVISION" ]]; then
+            echo "::error::The branch resolved to a different commit. Retry with the intended revision."
+            exit 1
+          fi
       - uses: actions/checkout@v4
       - uses: docker/setup-buildx-action@v3
       - uses: docker/login-action@v3

@@ -16,6 +16,12 @@
 
 RunPodのContainer Imageに指定し、下のSecret・HTTPポート・保存領域を設定すれば、自動でStudioが起動します。コンテナ取得用のGitHubトークンは不要です。`latest`も同じCUDA 12版を指します。公開ごとに`cuda12-<Git commit SHA>`タグも作成します。
 
+2026-09-13に[修正版のコンテナビルド](https://github.com/grawthings-beep/illustrious/actions/runs/34758749368)と公開、認証なしのmanifest/config取得を確認しました。image revisionは`1fd84a4ece6c4078c02fa556701d832485c4a6ae`、linux/amd64です。固定する場合の指定：
+
+```text
+ghcr.io/grawthings-beep/illustrious@sha256:23fdbb4901dc04756c57717e46005957bed16d232edcc7584a71ebd486170864
+```
+
 2026-09-13の初版はCUDA 13用で、CUDA API 12.4のドライバーを持つPodではGPU初期化に失敗しました。環境変数の不足ではありません。修正版はPyTorch 2.11.0 / CUDA 12.8です。古い`latest`を取得済みの場合は、Container Imageを`cuda12`または修正版のcommitタグに変更して再デプロイしてください。保存済みのモデル・LoRA・画像がある`/workspace`のボリュームを保持してください。
 
 CUDA 12系は[NVIDIAのminor version compatibility](https://docs.nvidia.com/deploy/cuda-compatibility/minor-version-compatibility.html)により、対応する12系ドライバー上で動作できます（Linuxでは最低525.60.13、GPU自体が要求する版も必要）。12.4表示だから12.8用PyTorchが必ず非対応という意味ではありません。ただしPTX等には制限があるため、起動時に実GPUの行列積・逆伝播・畳み込み・Attentionを検証してからモデルを取得します。
@@ -114,8 +120,9 @@ python scripts/pack_loras.py --source "C:\LoRAを保存したフォルダ" --out
 cd /workspace
 # ここでPCに表示された runpodctl receive ... を実行
 tar -xzf illustrious-loras.tar.gz -C /workspace
-bash /workspace/illustrious-generation/scripts/start.sh
 ```
+
+このコンテナでは、展開後にRunPod画面からPodを再起動するとLoRAを取り込みます。別環境へ手動インストールした場合だけ、`bash /workspace/illustrious-generation/scripts/start.sh`で起動します。
 
 `--source`は複数指定できます。黒ビキニだけ送る場合は`--character cinderella_black_bikini`を追加します。パックは完成LoRAの名前とSHA-256を照合し、学習画像・中間epoch・サンプルを含めません。JupyterのGUIアップロードは不要です。[RunPod公式の転送手順](https://docs.runpod.io/pods/storage/transfer-files)
 
@@ -161,5 +168,7 @@ PCのPowerShellで保存先フォルダに移動し、表示された受信用�
 [`Dockerfile`](Dockerfile)はPyTorch 2.11.0 / CUDA 12.8の公式イメージをdigestで固定しています。重みと秘密トークンはビルドせず、Pod起動時に読み込みます。ビルド中のCPU検証は実GPUでの動作確認とは区別してください。
 
 公開済みのGHCRイメージを使う場合は再ビルド不要です。更新版を作るときは、GitHubのActions → **Build RunPod image** → **Run workflow** を実行します。ビルド済みイメージには、PCと同じ`runpodctl 2.3.0`もSHA-256検証付きで同梱しています。Pod用設定例は[`deploy/runpod-template.json`](deploy/runpod-template.json)。RunPod側でrepoのDockerfileを直接ビルドする使い方も可能です。
+
+公開するときはRun workflowの`expected_revision`に意図したcommitの完全なSHAを入力します。ブランチが別のcommitを指している場合はビルド前に停止します。開始直後のrunの`headSha`と、公開後のイメージの`org.opencontainers.image.revision`も確認してください。
 
 追加キャラの登録、Hugging Face上のLoRA取得、構成の詳細、検証内容は[`docs/WORKFLOWS.md`](docs/WORKFLOWS.md)を参照してください。

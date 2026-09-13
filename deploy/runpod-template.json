@@ -1,6 +1,6 @@
 {
   "name": "Illustrious Studio — Nova Anime XL IL v19.0",
-  "imageName": "ghcr.io/grawthings-beep/illustrious:latest",
+  "imageName": "ghcr.io/grawthings-beep/illustrious:cuda12",
   "containerDiskInGb": 25,
   "volumeInGb": 50,
   "volumeMountPath": "/workspace",
@@ -8,7 +8,8 @@
   "env": {
     "CIVITAI_TOKEN": "{{ RUNPOD_SECRET_CIVITAI_TOKEN }}",
     "HF_TOKEN": "{{ RUNPOD_SECRET_HF_TOKEN }}",
-    "ILLUSTRIOUS_WORKSPACE": "/workspace"
+    "ILLUSTRIOUS_WORKSPACE": "/workspace",
+    "ILLUSTRIOUS_PORT": "8188"
   },
   "isServerless": false,
   "isPublic": false
