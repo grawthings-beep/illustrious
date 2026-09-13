@@ -12,6 +12,12 @@
 
 ## RunPodで起動する
 
+**このrepoのDockerfileからビルドしたPodを起動する場合、ターミナルで`git clone`や`bash`を実行する必要はありません。** DockerfileのENTRYPOINTがモデルの準備からStudioの起動まで自動実行します。
+
+Animaと同様にrepoからビルドして使う場合は、リポジトリ`grawthings-beep/illustrious`、ブランチ`main`、Dockerfileのパス`Dockerfile`を使用します。起動コマンドの上書きは空欄（Dockerfileの既定値を使用）にしてください。このアプリは**GPU Podで操作するWeb画面**です。ServerlessのQueue用handlerではありません。
+
+下の「既存Podへの手動追加」は、すでに起動済みの別の環境へ後からインストールするときだけの手順です。
+
 ### 1. Podの設定
 
 GPU付きPodを使用し、HTTPポートに **8188** を追加してください。環境変数は以下の名前で、作成済みのSecretを割り当てます。
@@ -25,9 +31,16 @@ GPU付きPodを使用し、HTTPポートに **8188** を追加してください
 
 LoRA学習に使ったPodをそのまま使用できます。起動済みの別のComfyUIが8188を使っている場合は、そのサービスを停止するか、後述の別ポートを使ってください。
 
-### 2. RunPodのターミナルに貼る
+### 2. ビルドしたPodを起動する
 
-初回はこの3行を実行します。
+Secretとポートを設定してPodを起動すると、自動で環境検証・モデルの準備・Studio起動が始まります。起動ログを確認してから、次の手順で画面を開いてください。モデルは初回のみダウンロードし、同じ保存領域に残っていれば再利用します。
+
+Dockerfileには自動起動設定がありますが、実際のRunPod上でのDockerビルド・GPU生成成功はまだ未確認です。
+
+<details>
+<summary>既存Podへの手動追加（repoからビルドして起動する場合は不要）</summary>
+
+別のテンプレートですでに起動したPodへ追加する場合だけ、ターミナルでこの3行を実行します。
 
 ```bash
 cd /workspace
@@ -44,6 +57,8 @@ ILLUSTRIOUS_PORT=8189 bash /workspace/illustrious-generation/scripts/start.sh
 ```
 
 初回はComfyUIと必要パッケージを専用環境に用意します。学習用の`/opt/venvs/core`を書き換えず、既存のCUDA PyTorchを保持します。GPU計算・CLIP・実際のComfyUIノードを確認してから、チェックポイントを取得します。6.94 GBのダウンロードは中断後の再開とSHA-256照合に対応しています。
+
+</details>
 
 ### 3. 画面を開く
 
@@ -135,6 +150,6 @@ PCのPowerShellで保存先フォルダに移動し、表示された受信用�
 
 [`Dockerfile`](Dockerfile)はPyTorch 2.11.0 / CUDA 13.0の公式イメージをdigestで固定しています。重みと秘密トークンはビルドせず、Pod起動時に読み込みます。
 
-GitHubのActions → **Build RunPod image** → **Run workflow** で`ghcr.io/grawthings-beep/illustrious:latest`を作成できます。**ビルド完了前はこのイメージは使用できません。** RunPod用設定例は[`deploy/runpod-template.json`](deploy/runpod-template.json)。GHCRのパッケージがprivateの場合は、RunPodのレジストリ認証設定かパッケージの公開設定が必要です。
+RunPod側でこのrepoのDockerfileをビルドする場合、GHCRのイメージ作成は不要です。あらかじめコンテナレジストリに置いて使いたい場合のみ、GitHubのActions → **Build RunPod image** → **Run workflow** で`ghcr.io/grawthings-beep/illustrious:latest`を作成できます。**ビルド完了前はこのGHCRイメージは使用できません。** GHCRから起動する場合のRunPod用設定例は[`deploy/runpod-template.json`](deploy/runpod-template.json)。GHCRのパッケージがprivateの場合は、RunPodのレジストリ認証設定かパッケージの公開設定が必要です。
 
 追加キャラの登録、Hugging Face上のLoRA取得、構成の詳細、検証内容は[`docs/WORKFLOWS.md`](docs/WORKFLOWS.md)を参照してください。
