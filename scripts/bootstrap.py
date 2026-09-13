@@ -43,7 +43,7 @@ def install(workspace, comfy):
         constraints = venv / "cuda-constraints.txt"
         constraints.write_text(protected, encoding="utf-8")
         if not any(line.startswith("torch==") for line in protected.splitlines()):
-            command([python, "-m", "pip", "install", "torch==2.11.0", "torchvision==0.26.0", "torchaudio==2.11.0", "--index-url", "https://download.pytorch.org/whl/cu130"])
+            command([python, "-m", "pip", "install", "torch==2.11.0", "torchvision==0.26.0", "torchaudio==2.11.0", "--index-url", "https://download.pytorch.org/whl/cu128"])
             protected = subprocess.check_output([str(python), "-c", freeze_script], text=True)
             constraints.write_text(protected, encoding="utf-8")
         command([python, "-m", "pip", "install", "-c", constraints, "-r", comfy / "requirements.txt", "-r", ROOT / "requirements.txt"])

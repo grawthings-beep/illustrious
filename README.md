@@ -12,13 +12,13 @@
 
 ## RunPodで起動する
 
-**ビルド済みのコンテナイメージ：`ghcr.io/grawthings-beep/illustrious:latest`**
+**RunPod用のコンテナイメージ：`ghcr.io/grawthings-beep/illustrious:cuda12`**
 
-RunPodのContainer Imageに指定し、下のSecret・HTTPポート・保存領域を設定すれば、自動でStudioが起動します。2026-09-13に[DockerビルドとCPUでの実ComfyUI読み込み](https://github.com/grawthings-beep/illustrious/actions/runs/34756764943)、レジストリからの認証なし取得を確認しました。コンテナ取得用のGitHubトークンは不要です。イメージを固定したい場合は次のdigestを指定できます。
+RunPodのContainer Imageに指定し、下のSecret・HTTPポート・保存領域を設定すれば、自動でStudioが起動します。コンテナ取得用のGitHubトークンは不要です。`latest`も同じCUDA 12版を指します。公開ごとに`cuda12-<Git commit SHA>`タグも作成します。
 
-```text
-ghcr.io/grawthings-beep/illustrious@sha256:39c5d3e192023db72492b9b6e2f3c2ade5ccfed238978b1a72b3bca531032826
-```
+2026-09-13の初版はCUDA 13用で、CUDA API 12.4のドライバーを持つPodではGPU初期化に失敗しました。環境変数の不足ではありません。修正版はPyTorch 2.11.0 / CUDA 12.8です。古い`latest`を取得済みの場合は、Container Imageを`cuda12`または修正版のcommitタグに変更して再デプロイしてください。保存済みのモデル・LoRA・画像がある`/workspace`のボリュームを保持してください。
+
+CUDA 12系は[NVIDIAのminor version compatibility](https://docs.nvidia.com/deploy/cuda-compatibility/minor-version-compatibility.html)により、対応する12系ドライバー上で動作できます（Linuxでは最低525.60.13、GPU自体が要求する版も必要）。12.4表示だから12.8用PyTorchが必ず非対応という意味ではありません。ただしPTX等には制限があるため、起動時に実GPUの行列積・逆伝播・畳み込み・Attentionを検証してからモデルを取得します。
 
 **このrepoのDockerfileからビルドしたPodを起動する場合、ターミナルで`git clone`や`bash`を実行する必要はありません。** DockerfileのENTRYPOINTがモデルの準備からStudioの起動まで自動実行します。
 
@@ -158,7 +158,7 @@ PCのPowerShellで保存先フォルダに移動し、表示された受信用�
 
 ## Dockerと拡張
 
-[`Dockerfile`](Dockerfile)はPyTorch 2.11.0 / CUDA 13.0の公式イメージをdigestで固定しています。重みと秘密トークンはビルドせず、Pod起動時に読み込みます。
+[`Dockerfile`](Dockerfile)はPyTorch 2.11.0 / CUDA 12.8の公式イメージをdigestで固定しています。重みと秘密トークンはビルドせず、Pod起動時に読み込みます。ビルド中のCPU検証は実GPUでの動作確認とは区別してください。
 
 公開済みのGHCRイメージを使う場合は再ビルド不要です。更新版を作るときは、GitHubのActions → **Build RunPod image** → **Run workflow** を実行します。ビルド済みイメージには、PCと同じ`runpodctl 2.3.0`もSHA-256検証付きで同梱しています。Pod用設定例は[`deploy/runpod-template.json`](deploy/runpod-template.json)。RunPod側でrepoのDockerfileを直接ビルドする使い方も可能です。
 

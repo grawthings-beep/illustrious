@@ -22,6 +22,6 @@ jobs:
           platforms: linux/amd64
           push: true
           labels: org.opencontainers.image.revision=${{ github.sha }}
-          tags: ghcr.io/grawthings-beep/illustrious:latest,ghcr.io/grawthings-beep/illustrious:${{ github.sha }}
+          tags: ghcr.io/grawthings-beep/illustrious:latest,ghcr.io/grawthings-beep/illustrious:cuda12,ghcr.io/grawthings-beep/illustrious:cuda12-${{ github.sha }},ghcr.io/grawthings-beep/illustrious:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
